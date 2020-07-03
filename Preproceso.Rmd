@@ -19,7 +19,7 @@ library(showtext)
 library(kableExtra)
 library(ggplot2)
 library(gridExtra)
-setwd("~/UABC/Proyecto Investigación CoVid-19")
+#setwd("~/UABC/Proyecto Investigación CoVid-19")
 
 #Abriendo la información de la base de datos de https://www.gob.mx/salud/documentos/datos-abiertos-152127
 #UptdateCOVID19MEXICO <- read_csv("UABC/Proyecto Investigación CoVid-19/Datos Codi Mexico/200415COVID19MEXICO.csv")
