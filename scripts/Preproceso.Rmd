@@ -1,0 +1,232 @@
+---
+title: "Preproceso Datos Abiertos COVID-19 México"
+author: "Jonathan Keneth Rodriguez Bernal"
+date: "16/4/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+## Leyendo los Datos
+
+### Nombre de variables
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(readxl)
+library(tidyverse)
+library(showtext)
+library(kableExtra)
+library(ggplot2)
+library(gridExtra)
+#setwd("~/UABC/Proyecto Investigación CoVid-19")
+
+#Abriendo la información de la base de datos de https://www.gob.mx/salud/documentos/datos-abiertos-152127
+#UptdateCOVID19MEXICO <- read_csv("UABC/Proyecto Investigación CoVid-19/Datos Codi Mexico/200415COVID19MEXICO.csv")
+dat <- read_csv("datos/200702COVID19MEXICO.csv")
+#View(X200415COVID19MEXICO)
+#kable(as.data.frame(names(dat)))
+str(dat)
+```
+
+### Revisión Por Variable
+```{r}
+#dat$ORIGEN <- as.character(dat$ORIGEN)
+dat$ORIGEN <- factor(dat$ORIGEN,
+       levels = c(1,2,99),
+       labels = c("USMER", "Fuera de USMER", "No Especificado"))
+#str(dat$ORIGEN)
+#as.numeric(dat$ORIGEN)
+
+dat$SECTOR <- factor(dat$SECTOR,
+       levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,99),
+       labels = c("Cruz Roja", "DIF", "Estatal", "IMSS", "IMSS-Bienestar", "ISSSTE", "Municipal", "PEMEX", "Privada", "SEDENA", "SEMAR", "SSA", "Universitario", "No Especificado"))
+
+
+
+dat$ENTIDAD_UM<- factor(dat$ENTIDAD_UM,
+  levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,36,97,98,99), 
+  labels = c("AGUASCALIENTES", "BAJA CALIFORNIA", "BAJA CALIFORNIA SUR", "CAMPECHE", "COAHUILA","COLIMA","CHIAPAS", "CHIHUAHUA","CIUDAD DE MÉXICO","DURANGO","GUANAJUATO","GUERRERO","HIDALGO","JALISCO","MÉXICO","MICHOACÁN","MORELOS","NAYARIT","NUEVO LEÓN","OAXACA","PUEBLA","QUERÉTARO","QUINTANA ROO","SAN LUIS POTOSÍ","SINALOA","SONORA","TABASCO","TAMAULIPAS","TLAXCALA","VERACRUZ ","YUCATÁN","ZACATECAS","ESTADOS UNIDOS MEXICANOS", "NA","SI","NE" ))
+
+dat$SEXO<-factor(dat$SEXO,
+        levels = c(1,2,99),
+        labels = c("Femenino","Masculino","No Especificado"))
+
+
+dat$ENTIDAD_NAC<- factor(dat$ENTIDAD_NAC,
+  levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,36,97,98,99), 
+  labels = c("AGUASCALIENTES", "BAJA CALIFORNIA", "BAJA CALIFORNIA SUR", "CAMPECHE", "COAHUILA","COLIMA","CHIAPAS", "CHIHUAHUA","CIUDAD DE MÉXICO","DURANGO","GUANAJUATO","GUERRERO","HIDALGO","JALISCO","MÉXICO","MICHOACÁN","MORELOS","NAYARIT","NUEVO LEÓN","OAXACA","PUEBLA","QUERÉTARO","QUINTANA ROO","SAN LUIS POTOSÍ","SINALOA","SONORA","TABASCO","TAMAULIPAS","TLAXCALA","VERACRUZ ","YUCATÁN","ZACATECAS","ESTADOS UNIDOS MEXICANOS", "NA","SI","NE" ))
+
+dat$NACIONALIDAD<- factor(dat$NACIONALIDAD,
+                          levels = c(1,2,99),
+                          labels = c("Mexicana","Extranjera","NE")
+                          )
+
+
+dat$RESULTADO<-factor(dat$RESULTADO,
+                      levels = c(1,2,3),
+                      labels = c("Positivo SARS-CoV-19","Negativo SARS-CoV-19","Pendiente")  )
+
+
+
+dat$ENTIDAD_RES<- factor(dat$ENTIDAD_RES,
+  levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,36,97,98,99), 
+  labels = c("AGUASCALIENTES", "BAJA CALIFORNIA", "BAJA CALIFORNIA SUR", "CAMPECHE", "COAHUILA","COLIMA","CHIAPAS", "CHIHUAHUA","CIUDAD DE MÉXICO","DURANGO","GUANAJUATO","GUERRERO","HIDALGO","JALISCO","MÉXICO","MICHOACÁN","MORELOS","NAYARIT","NUEVO LEÓN","OAXACA","PUEBLA","QUERÉTARO","QUINTANA ROO","SAN LUIS POTOSÍ","SINALOA","SONORA","TABASCO","TAMAULIPAS","TLAXCALA","VERACRUZ ","YUCATÁN","ZACATECAS","ESTADOS UNIDOS MEXICANOS", "NA","SI","NE" ))
+
+
+dat$TIPO_PACIENTE<- factor(dat$TIPO_PACIENTE,
+                          levels = c(1,2,99),
+                          labels = c("Ambulatorio","Hospitalizado","NO ESPECIFICADO")
+                          )
+
+dat$HABLA_LENGUA_INDIG<-factor(dat$HABLA_LENGUA_INDIG,
+                              levels = c(1,2,97,98,99),
+                              labels = c("SI","NO","NO APLICA","SE IGNORA","NO ESPECIFICA"))
+
+dat$EMBARAZO<- factor(dat$EMBARAZO, 
+                      levels = c(1,2,97,98,99),
+                       labels = c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$DIABETES<- factor(dat$DIABETES,
+                      levels =c(1,2,97,98,99),
+                      labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA") )
+
+dat$EPOC<-factor(dat$EPOC,
+                  levels =c(1,2,97,98,99),
+                      labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$ASMA<-factor(dat$ASMA,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+
+dat$INMUSUPR<-factor(dat$INMUSUPR,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+
+dat$HIPERTENSION<-factor(dat$HIPERTENSION,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$CARDIOVASCULAR<-factor(dat$CARDIOVASCULAR,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$OBESIDAD<-factor(dat$OBESIDAD,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$RENAL_CRONICA<-factor(dat$RENAL_CRONICA,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$TABAQUISMO<-factor(dat$TABAQUISMO,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$OTRO_CASO<-factor(dat$OTRO_CASO,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+
+dat$UCI<-factor(dat$UCI,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$MIGRANTE<-factor(dat$MIGRANTE,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$INTUBADO<-factor(dat$INTUBADO,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$NEUMONIA<-factor(dat$NEUMONIA,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$OTRA_COM<-factor(dat$OTRA_COM,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$PAIS_ORIGEN<-factor(dat$PAIS_ORIGEN,
+                  levels=c(97),
+                 labels =c("NO APLICA"))
+
+dat$MUNICIPIO_RES<-as.character(dat$MUNICIPIO_RES)
+
+```
+
+
+
+## REPORTE DE CALIDAD DE LOS DATOS
+
+
+```{r}
+
+# Agregando la fuente de las funciones
+source("QOFCategorical.R")
+source("QOFContinouns.R")
+
+# Revisión de los datos Categoricas
+datos_Categoricos<-QOfCategoricalF(dat[,c(3:7,10,14,15,18,20:24,31,35)])
+
+# Revisiión de variables continuas
+datos_Continuos<-QOfContinuousF(dat[,c(16)])
+
+datos_Categoricos
+datos_Continuos
+#Representación Gráfica de los Datos
+
+barplot(table(dat$ORIGEN), main = "Tipo de Origen en Vigilancia Centinela", xlab = "Origen", ylab = "Frecuencia", col = "cadetblue1")
+
+barplot(table(dat$SEXO), main = "Sexo de Pacientes Registrado", xlab = "Origen", ylab = "Sexo", col = "burlywood4")
+
+barplot(table(dat$SECTOR), main = "Diferentes Sectores de Registro de Pacientes", xlab = "Unidades", ylab = "Frecuencia", col = "burlywood4")
+
+ori<-ggplot(dat, aes(ORIGEN))+ 
+          geom_bar()+
+          theme_bw()+
+          labs(title="Distribución de casos en Unidades",x="Unidades",y="Frecuencia")
+tub<-ggplot(dat,aes(INTUBADO))+        
+          geom_bar()+
+          theme_bw()+
+          labs(title="Pacientes Que Fueron Intubados",x="",y="Frecuencia")
+result<-ggplot(dat, aes(RESULTADO))+
+         geom_bar()+
+         xlab("Resultado SARS-COVID-19")+
+         ylab("Frecuencia")
+       
+sect<-ggplot(dat, aes(SECTOR))+
+         geom_bar()+
+         xlab("Sectores")+
+         ylab("Frecuencia")
+  
+hip<-ggplot(dat, aes(HIPERTENSION))+
+        geom_bar()+
+        labs(title="Pacientes que Presentan Hipertensión", x="", y="Frecuencia")
+
+cardi<-ggplot(dat,aes(CARDIOVASCULAR))+
+        geom_bar()+
+        labs(title="Pacientes que Presentan problemas Cardiovasculares",x="",y="Frecuencia")
+
+neumo<-ggplot(dat,aes(NEUMONIA))+
+        geom_bar()+
+        labs(title = "Pacientes que Presentan Neumonia",x="", y="Frecuencia")
+asm<-ggplot(dat,aes(ASMA))+
+  geom_bar()+ 
+  labs(title = "Pacientes que Presentan Asma", x="",y="Frecuencia")
+
+tp<-ggplot(dat,aes(TIPO_PACIENTE))+ geom_bar()+ labs(title = "Tipo de Paciente", x="Registro",y="Frecuencia")
+
+diab<-ggplot(dat,aes(DIABETES))+ geom_bar()+labs(title = "",x= "Paciente con Diabetes",y="Frecuencia")
+
+grid.arrange(asm,hip,cardi,neumo,ori,tub)
+
+result
+
+
+```
+
+
