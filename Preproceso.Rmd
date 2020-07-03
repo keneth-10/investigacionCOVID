@@ -23,7 +23,7 @@ library(gridExtra)
 
 #Abriendo la información de la base de datos de https://www.gob.mx/salud/documentos/datos-abiertos-152127
 #UptdateCOVID19MEXICO <- read_csv("UABC/Proyecto Investigación CoVid-19/Datos Codi Mexico/200415COVID19MEXICO.csv")
-dat <- read_csv("Datos Covid Mexico/200512COVID19MEXICO.csv")
+dat <- read_csv("datos/200702COVID19MEXICO.csv")
 #View(X200415COVID19MEXICO)
 #kable(as.data.frame(names(dat)))
 str(dat)
@@ -166,8 +166,8 @@ dat$MUNICIPIO_RES<-as.character(dat$MUNICIPIO_RES)
 ```{r}
 
 # Agregando la fuente de las funciones
-source("QOFCategorical.R")
-source("QOFContinouns.R")
+source("funciones/QOFCategorical.R")
+source("funciones/QOFContinouns.R")
 
 # Revisión de los datos Categoricas
 datos_Categoricos<-QOfCategoricalF(dat[,c(3:7,10,14,15,18,20:24,31,35)])
