@@ -1,0 +1,259 @@
+---
+title: "Información Organizada"
+author: "Jonathan Kerneth Rodriguez Bernal"
+date: "16/7/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+
+# Edición de Variables 
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(readr)
+
+
+dat <- read_csv("~/UABC/Proyecto Investigación CoVid-19/investigacionCOVID/datos/200727COVID19MEXICO.csv")
+
+# Modificando el tipo de Dato y agregando etiquetas a los valores categoricos asociados
+
+dat$ORIGEN <- factor(dat$ORIGEN,
+       levels = c(1,2,99),
+       labels = c("USMER", "Fuera de USMER", "No Especificado"))
+dat$SECTOR <- factor(dat$SECTOR,
+       levels = c(1,2,3,4,5,6,7,8,9,10,11,12,13,99),
+       labels = c("Cruz Roja", "DIF", "Estatal", "IMSS", "IMSS-Bienestar", "ISSSTE", "Municipal", "PEMEX", "Privada", "SEDENA", "SEMAR", "SSA", "Universitario", "No Especificado"))
+
+
+
+dat$ENTIDAD_UM<-factor(dat$ENTIDAD_UM,
+  labels = c("AGUASCALIENTES",
+"BAJA CALIFORNIA",
+"BAJA CALIFORNIA SUR",
+"CAMPECHE",
+"COAHUILA DE ZARAGOZA",
+"COLIMA",
+"CHIAPAS",
+"CHIHUAHUA",
+"CIUDAD DE MÉXICO",
+"DURANGO",
+"GUANAJUATO",
+"GUERRERO",
+"HIDALGO",
+"JALISCO",
+"MÉXICO",
+"MICHOACÁN DE OCAMPO",
+"MORELOS","NAYARIT",
+"NUEVO LEÓN",
+"OAXACA",
+"PUEBLA",
+"QUERÉTARO",
+"QUINTANA ROO",
+"SAN LUIS POTOSÍ",
+"SINALOA",
+"SONORA",
+"TABASCO",
+"TAMAULIPAS",
+"TLAXCALA",
+"VERACRUZ DE IGNACIO DE LA LLAVE",
+"YUCATÁN",
+"ZACATECAS" ))
+
+dat$SEXO<-factor(dat$SEXO,
+        levels = c(1,2,99),
+        labels = c("Femenino","Masculino","No Especificado"))
+
+
+dat$ENTIDAD_NAC<- factor(dat$ENTIDAD_NAC, 
+  labels = c("AGUASCALIENTES",
+"BAJA CALIFORNIA",
+"BAJA CALIFORNIA SUR",
+"CAMPECHE",
+"COAHUILA DE ZARAGOZA",
+"COLIMA",
+"CHIAPAS",
+"CHIHUAHUA",
+"CIUDAD DE MÉXICO",
+"DURANGO",
+"GUANAJUATO",
+"GUERRERO",
+"HIDALGO",
+"JALISCO",
+"MÉXICO",
+"MICHOACÁN DE OCAMPO",
+"MORELOS","NAYARIT",
+"NUEVO LEÓN",
+"OAXACA",
+"PUEBLA",
+"QUERÉTARO",
+"QUINTANA ROO",
+"SAN LUIS POTOSÍ",
+"SINALOA",
+"SONORA",
+"TABASCO",
+"TAMAULIPAS",
+"TLAXCALA",
+"VERACRUZ DE IGNACIO DE LA LLAVE",
+"YUCATÁN",
+"ZACATECAS", "NE"
+    
+    
+  ))
+
+dat$NACIONALIDAD<- factor(dat$NACIONALIDAD,
+                          levels = c(1,2,99),
+                          labels = c("Mexicana","Extranjera","NE")
+                          )
+
+
+dat$RESULTADO<-factor(dat$RESULTADO,
+                      levels = c(1,2,3),
+                      labels = c("Positivo SARS-CoV-19","Negativo SARS-CoV-19","Pendiente")  )
+
+
+
+dat$ENTIDAD_RES<- factor(dat$ENTIDAD_RES, 
+  labels = c("BAJA CALIFORNIA",
+"BAJA CALIFORNIA SUR",
+"CAMPECHE",
+"COAHUILA DE ZARAGOZA",
+"COLIMA",
+"CHIAPAS",
+"CHIHUAHUA",
+"CIUDAD DE MÉXICO",
+"DURANGO",
+"GUANAJUATO",
+"GUERRERO",
+"HIDALGO",
+"JALISCO",
+"MÉXICO",
+"MICHOACÁN DE OCAMPO",
+"MORELOS","NAYARIT",
+"NUEVO LEÓN",
+"OAXACA",
+"PUEBLA",
+"QUERÉTARO",
+"QUINTANA ROO",
+"SAN LUIS POTOSÍ",
+"SINALOA",
+"SONORA",
+"TABASCO",
+"TAMAULIPAS",
+"TLAXCALA",
+"VERACRUZ DE IGNACIO DE LA LLAVE",
+"YUCATÁN",
+"ZACATECAS", "NE" ))
+
+
+dat$TIPO_PACIENTE<- factor(dat$TIPO_PACIENTE,
+                          levels = c(1,2,99),
+                          labels = c("Ambulatorio","Hospitalizado","NO ESPECIFICADO")
+                          )
+
+dat$HABLA_LENGUA_INDIG<-factor(dat$HABLA_LENGUA_INDIG,
+                              levels = c(1,2,97,98,99),
+                              labels = c("SI","NO","NO APLICA","SE IGNORA","NO ESPECIFICA"))
+
+dat$EMBARAZO<- factor(dat$EMBARAZO, 
+                      levels = c(1,2,97,98,99),
+                       labels = c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$DIABETES<- factor(dat$DIABETES,
+                      levels =c(1,2,97,98,99),
+                      labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA") )
+
+dat$EPOC<-factor(dat$EPOC,
+                  levels =c(1,2,97,98,99),
+                      labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$ASMA<-factor(dat$ASMA,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+
+dat$INMUSUPR<-factor(dat$INMUSUPR,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+
+dat$HIPERTENSION<-factor(dat$HIPERTENSION,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$CARDIOVASCULAR<-factor(dat$CARDIOVASCULAR,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$OBESIDAD<-factor(dat$OBESIDAD,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$RENAL_CRONICA<-factor(dat$RENAL_CRONICA,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$TABAQUISMO<-factor(dat$TABAQUISMO,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$OTRO_CASO<-factor(dat$OTRO_CASO,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+
+dat$UCI<-factor(dat$UCI,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$MIGRANTE<-factor(dat$MIGRANTE,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$INTUBADO<-factor(dat$INTUBADO,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$NEUMONIA<-factor(dat$NEUMONIA,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$OTRA_COM<-factor(dat$OTRA_COM,
+                  levels=c(1,2,97,98,99),
+                 labels =c("SI","NO","NO APLICA","SE IGNORA","NO ESPICIFA"))
+
+dat$PAIS_ORIGEN<-factor(dat$PAIS_ORIGEN,
+                  levels=c(97),
+                 labels =c("NO APLICA"))
+
+dat$MUNICIPIO_RES<-factor(dat$MUNICIPIO_RES)
+dat$ENTIDAD_NAC<-factor(dat$ENTIDAD_NAC)
+dat$ENTIDAD_RES<-factor(dat$ENTIDAD_RES)
+dat$ENTIDAD_UM<-factor(dat$ENTIDAD_UM)
+dat$PAIS_NACIONALIDAD<-factor(dat$PAIS_NACIONALIDAD)
+
+
+
+```
+
+
+
+
+# Tabla con Datos demograficos
+```{r}
+demografico_Cov<-arrange(data.frame (dat %>% select(ID_REGISTRO,EDAD,SEXO,ORIGEN,TIPO_PACIENTE,
+                        SECTOR,ENTIDAD_UM,ENTIDAD_RES,NACIONALIDAD,HABLA_LENGUA_INDIG,
+                        RESULTADO,UCI,FECHA_SINTOMAS,FECHA_DEF )))
+demografico_Cov
+```
+
+# Tabla con Datos clinicos del Paciente
+```{r}
+enfermedades_Cov<- arrange(data.frame(dat%>% 
+        select(ID_REGISTRO,EMBARAZO,INMUSUPR,DIABETES,HIPERTENSION,EPOC,ASMA,OBESIDAD,CARDIOVASCULAR,
+               RENAL_CRONICA,TABAQUISMO,INTUBADO)))
+enfermedades_Cov
+```
+
+
